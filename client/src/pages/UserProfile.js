@@ -5,8 +5,6 @@ import { Typography, Grid, Button } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
-import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
 
 import UserProfileMap from "../components/UserProfileMap";
 import { UserContext } from "../contexts/user/UserContextProvider";
@@ -15,36 +13,26 @@ import Main from "../components/Main";
 
 const useStyles = makeStyles((theme) => ({
     profile: {
-        overflow: "hidden",
-        height: "85vh",
+        // overflow: "hidden",
+        width: "100%",
+        maxWidth: "800px",
+        height: "40vh",
     },
-    profileTopRight: {
-        padding: "2rem 0 0 2rem",
-        height: "60%",
-    },
+    profileTopRight: {},
     profileTopLeft: {
-        borderRight: "1px solid lightgrey",
-        padding: "2rem 0 0 0",
         textAlign: "center",
-        height: "60%",
     },
 
     userImage: {
         margin: "auto",
         border: "5px solid white",
-        height: "15vw",
-        width: "15vw",
-        maxWidth: "18vh",
-        maxHeight: "18vh",
+        height: "100px",
+        width: "100px",
     },
 
     sendMessageBtn: {
         textTransform: "capitalize",
         padding: "10px",
-    },
-
-    editRow: {
-        textAlign: "right",
     },
     editButton: {
         color: "white",
@@ -57,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
     box: {
         padding: ".6rem",
-        fontSize: ".5rem",
+        fontSize: ".7rem",
         fontWeight: "600",
         color: "#ffff",
         background: theme.background.secondary,
@@ -65,12 +53,19 @@ const useStyles = makeStyles((theme) => ({
     link: {
         color: "#FF743D",
         textDecoration: "none",
+        fontSize: "0.7rem",
+    },
+
+    map: {
+        backgroundPosition: "center center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        height: "40vh",
     },
 }));
 
 export default function UserProfile() {
     const classes = useStyles();
-    const history = useHistory();
     const user = React.useContext(UserContext);
     const { profile } = user;
     profile.chefProfile = { ...profile.chefProfile };
@@ -94,16 +89,14 @@ export default function UserProfile() {
                 component={Grid}
                 boxShadow={3}
                 container
-                spacing={0}
+                spacing={4}
                 className={classes.profile}
             >
                 <Grid
                     item
                     xs={6}
-                    sm={4}
                     container
-                    spacing={2}
-                    alignContent="flex-start"
+                    spacing={1}
                     className={classes.profileTopLeft}
                 >
                     <Grid item xs={12}>
@@ -116,30 +109,25 @@ export default function UserProfile() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6" component="h2">
+                        <Typography variant="subtitle2" component="h2">
                             {userData.name}
                         </Typography>
-                        <Typography variant="body1" component="h3">
+                        <Typography variant="body2" component="h3">
                             {userData.location}
                         </Typography>
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        container
-                        direction="row"
-                        justify="center"
-                        alignItems="center"
-                        spacing={2}
-                    >
+                    <Grid item xs={12}>
                         {user.profile.chefProfile.cuisineSpecialty &&
                             user.profile.chefProfile.cuisineSpecialty.map(
                                 (specialty) => (
-                                    <Grid item key={specialty}>
-                                        <Box className={classes.box}>
-                                            {specialty}
-                                        </Box>
-                                    </Grid>
+                                    <Button
+                                        key={specialty}
+                                        className={classes.box}
+                                        color="primary"
+                                        variant="contained"
+                                    >
+                                        {specialty}
+                                    </Button>
                                 )
                             )}
                     </Grid>
@@ -169,44 +157,52 @@ export default function UserProfile() {
                     item
                     xs={6}
                     container
-                    spacing={2}
-                    alignContent="flex-start"
+                    spacing={0}
                     className={classes.profileTopRight}
                 >
-                    <Grid className={classes.editRow} item xs={12}>
-                        <IconButton
-                            className={classes.editButton}
-                            onClick={() => history.push("/editprofile")}
+                    <Grid item xs={12}>
+                        <Button
+                            className={classes.chefButton}
+                            variant="outlined"
+                            color="primary"
                         >
-                            <EditIcon />
-                        </IconButton>
+                            <Link className={classes.link} to={"/editprofile"}>
+                                Edit Profile
+                            </Link>
+                        </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h6" component="h4">
+                        <Typography variant="subtitle2" component="h4">
                             About Me:
                         </Typography>
-                        <Typography variant="body1" component="h5">
+                        <Typography variant="body2" component="h5">
                             {userData.about}
                         </Typography>
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Typography variant="h6" component="h4">
+                        <Typography variant="subtitle2" component="h4">
                             Favourite Cuisine:
                         </Typography>
                         {userData.cuisine.map((cuisine) => (
                             <Button
                                 key={cuisine}
-                                className={classes.cuisineButton}
+                                className={classes.box}
                                 color="primary"
                                 variant="contained"
                             >
-                                <Typography variant="button">{cuisine}</Typography>
+                                {cuisine}
                             </Button>
                         ))}
                     </Grid>
                 </Grid>
-                <UserProfileMap location={userData.location} />
+
+                <Box
+                    component={UserProfileMap}
+                    className={classes.map}
+                    location={userData.location}
+                    boxShadow={3}
+                />
             </Box>
         </Main>
     );

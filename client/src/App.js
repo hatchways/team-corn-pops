@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { theme } from "./themes/theme";
 import LoginSignUp from "./pages/LoginSignUp";
@@ -48,13 +48,6 @@ function App() {
             <SnackbarProvider>
                 <CssBaseline />
                 <BrowserRouter>
-                    <Route path="/">
-                        {user.isAuthenticated ? (
-                            <Redirect to="/meals" />
-                        ) : (
-                            <Redirect to="/signup" />
-                        )}
-                    </Route>
                     <Switch>
                         <Route path="/signup" component={LoginSignUp} />
                         <Route path="/login" component={LoginSignUp} />
